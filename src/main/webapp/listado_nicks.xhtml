@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Gestión de Nicks</title>
+    </h:head>
+    <h:body>
+        <h3> Gestión de Nicks </h3>
+
+        <h:form>
+            <h4> NICK ACTUAL </h4>
+            <h:panelGrid columns="2" rendered="#{not empty nickControlador.nickActual}">
+                <h:outputLabel value="Id: "/>
+                <h:outputLabel value="#{nickControlador.nickActual.id}"/>
+
+                <h:outputLabel value="Nick: "/>
+                <h:outputLabel value="#{nickControlador.nickActual.nick}"/>
+
+                <h:outputLabel value="Nombre: "/>
+                <h:outputLabel value="#{nickControlador.nickActual.nombre}"/>
+
+                <h:outputLabel value="F. creacion: "/>
+                <h:outputLabel value="#{nickControlador.nickActual.creacion}">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </h:outputLabel>
+            </h:panelGrid>
+
+            <h:commandButton value="Crear nuevo Nick" action="#{nickControlador.doCrearNuevoNick()}" />
+
+            <h4> BUSCAR NICKS </h4>
+            <h:panelGrid columns="3">
+                <h:outputLabel value="Buscar nick"/>
+                <h:inputText value="#{nickControlador.nombreNickBuscar}"/>
+                <h:commandButton value="Buscar" action="#{nickControlador.doBuscarNombreNick()}"/>
+            </h:panelGrid>
+
+            <h4> LISTADO de NICKS </h4>
+            <h:dataTable value="#{nickControlador.nicks}"
+                         var="nick">
+                <h:column>
+                    <f:facet name="header"> Id. </f:facet>
+                    <h:outputLabel value="#{nick.id}"/>                                       
+                </h:column>
+                <h:column>
+                    <f:facet name="header"> Nick </f:facet>
+                    <h:commandLink value="#{nick.nick}"
+                                   action="#{nickControlador.doSeleccionarNick(nick)}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header"> Nombre </f:facet>
+                    <h:outputLabel value="#{nick.nombre}"/>                                       
+                </h:column>
+                <h:column>
+                    <f:facet name="header"> F. creación </f:facet>
+                    <h:outputLabel value="#{nick.creacion}">
+                        <f:convertDateTime parent="dd/MM/yyyy"/>
+                    </h:outputLabel>
+                </h:column>
+                <h:column>
+                    <h:commandButton value="Seleccionar"
+                                     action="#{nickControlador.doSeleccionarNick(nick)}"/>
+                </h:column>
+                <h:column>
+                    <h:commandButton value="Ver anuncios"
+                                     action="#{nickControlador.doVerAnuncios(nick)}"/>
+                </h:column>
+            </h:dataTable>
+
+            <h:commandButton value="Volver" action="index"/>
+
+        </h:form>
+
+    </h:body>
+</html>
+
