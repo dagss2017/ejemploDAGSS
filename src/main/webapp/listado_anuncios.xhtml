@@ -9,16 +9,55 @@
     <h:body>
         <h3> Gestión de Anuncios </h3>
         <h:form>
-            
-            <p> Completar aquí </p>
-            <ul>
-                <li>Incluir un buscador de anuncios</li>
-                <li>Incluir el listado de anuncios (inicalmente todos los del Nick actual, después el resultado de la búsqueda)</li>                
-            </ul>
-            
-            
+            <h:panelGrid columns="1">
+                <h:commandButton value="Nuevo Anuncio" action="#{anuncioControlador.doNuevoAnuncio()}"/>
+                <h:commandButton value="Ver Todos" action="#{anuncioControlador.doVerTodos()}"/>
+
+                <h:panelGrid columns="4">
+                    <h:outputLabel value="Búsqueda:"/>
+                    <h:inputText value="#{anuncioControlador.textoBusqueda}"/>
+                    <h:commandButton value="Buscar por Nick" action="#{anuncioControlador.doBuscarNick()}"/>
+                    <h:commandButton value="Buscar por Título" action="#{anuncioControlador.doBuscarTitulo()}"/>
+                </h:panelGrid>
+            </h:panelGrid>
+
+            <h:dataTable value="#{anuncioControlador.anuncios}"
+                         var="anuncio">
+                <h:column>
+                    <f:facet name="header"><h:outputLabel value="ID"/></f:facet>
+                    <h:outputText value="#{anuncio.id}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header"><h:outputLabel value="Título"/></f:facet>
+                    <h:outputText value="#{anuncio.titulo}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header"><h:outputLabel value="Autor"/></f:facet>
+                    <h:outputText value="#{anuncio.autor.nick}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header"><h:outputLabel value="Fecha"/></f:facet>
+                    <h:outputText value="#{anuncio.fecha}">
+                        <f:convertDateTime pattern="dd/MM/yyyy, hh:mm"/>
+                    </h:outputText>
+                </h:column>
+                <h:column>
+                    <f:facet name="header"><h:outputLabel value="Num. comentarios"/></f:facet>
+                    <h:outputText value="#{anuncio.comentarios.size()}"
+                                  rendered="#{not empty anuncio.comentarios}"/>
+                    <h:outputText value="0"
+                                  rendered="#{empty anuncio.comentarios}"/>
+                </h:column>              
+                <h:column>
+                    <h:commandButton value="Detalle" action="#{anuncioControlador.doVerDetalle(anuncio)}"/>
+                </h:column>     
+            </h:dataTable>
+
             <h:commandButton value="Volver" action="index"/>
+
         </h:form>
+
+
     </h:body>
 </html>
 

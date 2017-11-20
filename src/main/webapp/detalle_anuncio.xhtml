@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Detalle Anuncio</title>
+    </h:head>
+    <h:body>
+        <h3> Detalle Anuncio </h3>
+
+        <h:form>                     
+            <p:panelGrid columns="2">
+                <f:facet name="header">
+                    <p:outputLabel value="Detalles del anuncio"/>
+                </f:facet>
+
+                <p:outputLabel value="Autor:"/>
+                <p:outputLabel value="#{anuncioControlador.anuncioActual.autor.nick}"/>
+
+                <p:outputLabel value="Fecha:"/>
+                <p:outputLabel value="#{anuncioControlador.anuncioActual.fecha}">
+                    <f:convertDateTime pattern="dd/MM/yyyy, hh:mm"/>
+                </p:outputLabel>
+
+                <p:outputLabel value="Título:"/>
+                <p:outputLabel value="#{anuncioControlador.anuncioActual.titulo}"/>
+
+                <p:outputLabel value="Detalle:"/>
+                <p:inputTextarea value="#{anuncioControlador.anuncioActual.detalle}"
+                                 rows="6" cols="25" readonly="true"/>
+            </p:panelGrid>
+
+
+            <p:dataTable id="tablaComentarios"
+                         value="#{anuncioControlador.anuncioActual.comentarios}"
+                         var="comentario">
+                <f:facet name="header">
+                    <p:outputLabel value="Comentarios del anuncio"/>
+                </f:facet>
+
+                <p:column headerText="Autor">
+                    <p:outputLabel value="#{comentario.autor.nick}"/>                    
+                </p:column>
+                <p:column headerText="Comentario">
+                    <p:outputLabel value="#{comentario.texto}"/>
+                </p:column>
+                <p:column headerText="Fecha">
+                    <p:outputLabel value="#{comentario.fecha}">
+                        <f:convertDateTime pattern="dd/MM/yyyy, hh:mm"/>
+                    </p:outputLabel>
+                </p:column>
+                <p:column>
+                    <p:commandButton id="botonEliminar"
+                                     value="Eliminar"
+                                     rendered="#{comentario.autor.id == nickControlador.nickActual.id}"
+                                     actionListener="#{anuncioControlador.eventoEliminarComentario(comentario)}"
+                                     process="@this"
+                                     update="tablaComentarios"/>
+                                     
+                </p:column>                
+            </p:dataTable>
+
+            <p:panelGrid columns="4" styleClass="ui-noborder">
+                <p:outputLabel value="Nuevo Comentario"/>
+                <p:inputText id="textoComentario" value="#{anuncioControlador.textoComentario}"/>
+                <p:outputLabel  value="(de '#{nickControlador.nickActual.nick}')"/>
+                <p:commandButton id="botonComentario" value="Añadir comentario"
+                                 actionListener="#{anuncioControlador.eventoAnadirComentario()}"
+                                 process="@this textoComentario"
+                                 update="tablaComentarios"
+                                 />                             
+            </p:panelGrid>
+
+            <p:commandButton value="Volver" ajax="false" action="listado_anuncios?facesRedirect=true"/>
+            
+        </h:form>
+    </h:body>
+</html>
+
